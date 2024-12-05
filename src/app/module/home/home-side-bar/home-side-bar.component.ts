@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../core/services/api/api.service';
 
 @Component({
   selector: 'app-home-side-bar',
@@ -7,6 +8,15 @@ import { Component } from '@angular/core';
   templateUrl: './home-side-bar.component.html',
   styleUrl: './home-side-bar.component.scss'
 })
-export class HomeSideBarComponent {
+export class HomeSideBarComponent implements OnInit {
+  public data:any = [];
 
+  constructor(private api: ApiService) {}
+
+  ngOnInit() {
+    this.api.getData('character').subscribe((data:any) => {
+      this.data = data;
+    });
+    console.log('Data:', this.data);
+  }
 }
