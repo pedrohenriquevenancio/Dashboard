@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, interval, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, interval, Observable, switchMap, timer } from 'rxjs';
 import { CharacterType } from '../../models/CharacterType';
 
 @Injectable({
@@ -8,22 +8,23 @@ import { CharacterType } from '../../models/CharacterType';
 })
 export class ApiService {
   private baseURL = 'https://potterapi-fedeperin.vercel.app/pt/';
-  private query = new BehaviorSubject<string | null>(null);
-  public query$ = this.query.asObservable();
+  private querySubject = new BehaviorSubject<string>('');
+  public query$ = this.querySubject.asObservable().pipe(distinctUntilChanged());
 
   constructor(private http: HttpClient) {}
 
   public setQuery(query:string) {
-    this.query.next(query);
+    let capitalizeQuery = query && query.trim().length > 0 ? query.charAt(0).toUpperCase() + query.slice(1).toLowerCase() : '';
+    console.log(query,capitalizeQuery);
+    this.querySubject.next(capitalizeQuery);
   }
 
   public getAllData(endpoint:string): Observable<CharacterType[]> {
-    let formattedQuery = '';
-    this.query$.subscribe(query => {
-      if (query) formattedQuery = `/${query}`;
-    });
-    return interval(5000).pipe(
-      switchMap(() => this.http.get<CharacterType[]>(`${this.baseURL}${endpoint}${formattedQuery}`))
+    return combineLatest([this.query$]).pipe(
+      switchMap(([query]) => {
+        let formattedQuery = query && query.trim().length > 0 ? `?search=${query}` : '';
+        return this.http.get<CharacterType[]>(`${this.baseURL}${endpoint}${formattedQuery}`);
+      })
     );
   }
 

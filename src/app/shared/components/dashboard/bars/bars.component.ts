@@ -77,6 +77,9 @@ export class BarsComponent implements OnChanges {
     };
     const canvas = this.el.nativeElement.querySelector(`#${this.slug}`);
     if (canvas) {
+      if (this.chart) {
+        this.chart.destroy();
+      }
       const config = {
         type: 'bar',
         data: this.data,
@@ -88,6 +91,16 @@ export class BarsComponent implements OnChanges {
             },
           },
         },
+        plugins: [{
+          id: `custom_event_${this.slug}`,
+          beforeEvent(canvas:any, args:any, pluginOptions:any) {
+            const event = args.event;
+            if (event.type === 'click') {
+              console.log('Clicked', event);
+
+            }
+          }
+        }]
       };
       this.chart = new Chart(canvas.getContext('2d'), config as any);
       this.cdr.detectChanges();

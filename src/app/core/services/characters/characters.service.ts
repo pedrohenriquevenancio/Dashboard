@@ -11,6 +11,10 @@ export class CharactersService {
 
   constructor() { }
 
+  public getCharacter() {
+    return this.character.value;
+  }
+
   public setCharacter(character: CharacterType) {
     this.character.next(character);
   }
