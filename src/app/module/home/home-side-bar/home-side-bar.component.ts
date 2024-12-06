@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../core/services/api/api.service';
+import { CharacterType } from '../../../core/models/CharacterType';
+import { CharactersService } from '../../../core/services/characters/characters.service';
 
 @Component({
   selector: 'app-home-side-bar',
@@ -9,14 +10,13 @@ import { ApiService } from '../../../core/services/api/api.service';
   styleUrl: './home-side-bar.component.scss'
 })
 export class HomeSideBarComponent implements OnInit {
-  public data:any = [];
+  public character:CharacterType = {} as CharacterType;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: CharactersService) {}
 
   ngOnInit() {
-    this.api.getData('character').subscribe((data:any) => {
-      this.data = data;
+    this.api.character$.subscribe(character => {
+      this.character = character;
     });
-    console.log('Data:', this.data);
   }
 }

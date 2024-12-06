@@ -1,8 +1,14 @@
-<div class="w-full h-full">
+<div class="w-full h-full flex">
   <div class="w-4/12 h-full bg-gray-300">
     <app-home-side-bar></app-home-side-bar>
   </div>
-  <div class="w-8/12 h-full">
-
+  <div class="w-8/12 h-full px-24 py-28">
+    <app-search></app-search>
+    <app-bars
+      slug="graphChildren"
+      [label]="'Quantidade de filhos'"
+      [y_axis]="sortedChildrenLengths"
+      [x_axis]="sortedFullNames"
+    ></app-bars>
   </div>
 </div>
