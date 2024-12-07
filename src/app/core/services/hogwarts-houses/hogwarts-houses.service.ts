@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, filter, first, map, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, first, forkJoin, map, switchMap } from 'rxjs';
 import { HogwartsHouseType } from '../../models/HogwartsHouseType';
 import { IConfigAPI } from '../../models/ApiTypes';
 import { HttpClient } from '@angular/common/http';
+import { CharacterType } from '../../models/CharacterType';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,22 @@ export class HogwartsHousesService extends IConfigAPI {
       switchMap(([query]) => {
         let formattedQuery = query && query.trim().length > 0 ? `?search=${query}` : '';
         return this.http.get<HogwartsHouseType[]>(`${this.apiUrl}houses${formattedQuery}`);
+      }),
+      switchMap((houses) => {
+        return forkJoin(
+          houses.map((house) => {
+            return forkJoin({
+              characters: this.http.get<CharacterType[]>(`${this.apiUrl}characters`)
+            }).pipe(
+              map(({characters}) => {
+                return {
+                  ...house,
+                  characters: characters.filter((character) => character.hogwartsHouse === house.house) ?? null
+                }
+              })
+            )
+          })
+        )
       })
     );
   }

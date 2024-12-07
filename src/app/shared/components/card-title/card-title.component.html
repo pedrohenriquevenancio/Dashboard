@@ -1,0 +1,6 @@
+<div class="w-full rounded-md bg-gray-300 border-gray-400 text-gray-800 text-center font-bold p-2">
+  <h3 *ngIf="icon" [ngClass]="align">{{icon}} {{title}}</h3>
+  <div *ngIf="image" class="flex" [ngClass]="align">
+    <img [src]="image" alt="Image" class="w-10 h-10 rounded-full mr-2"> {{title}}
+  </div>
+</div>

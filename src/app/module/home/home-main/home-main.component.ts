@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { BarsComponent } from '../../../shared/components/dashboard/bars/bars.component';
 import { CharacterType } from '../../../core/models/CharacterType';
-import { ApiService } from '../../../core/services/api/api.service';
 import { CharactersService } from '../../../core/services/characters/characters.service';
 
 @Component({
