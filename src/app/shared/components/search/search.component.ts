@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../core/services/api/api.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CharactersService } from '../../../core/services/characters/characters.service';
 
 @Component({
   selector: 'app-search',
@@ -12,7 +12,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 export class SearchComponent implements OnInit {
   public query = new FormControl('');
 
-  constructor(private api: ApiService) {}
+  constructor(private api: CharactersService) {}
 
   ngOnInit() {
     this.query.valueChanges.subscribe(query => this.api.setQuery(query as string));

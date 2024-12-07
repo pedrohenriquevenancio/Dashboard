@@ -1,0 +1,11 @@
+<div class="mb-4">
+  <app-search></app-search>
+</div>
+<div class="w-full h-full desktop:overflow-auto">
+  <app-bars
+    slug="graphChildren"
+    [label]="'Quantidade de filhos'"
+    [y_axis]="sortedChildrenLengths"
+    [x_axis]="sortedFullNames"
+  ></app-bars>
+</div>

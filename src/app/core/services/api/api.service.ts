@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, interval, Observable, switchMap, timer } from 'rxjs';
 import { CharacterType } from '../../models/CharacterType';
+import { IConfigAPI } from '../../models/ApiTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -13,22 +14,22 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  public setQuery(query:string) {
-    let capitalizeQuery = query && query.trim().length > 0 ? query.charAt(0).toUpperCase() + query.slice(1).toLowerCase() : '';
-    console.log(query,capitalizeQuery);
-    this.querySubject.next(capitalizeQuery);
-  }
+  // public setQuery(query:string) {
+  //   let capitalizeQuery = query && query.trim().length > 0 ? query.charAt(0).toUpperCase() + query.slice(1).toLowerCase() : '';
+  //   console.log(query,capitalizeQuery);
+  //   this.querySubject.next(capitalizeQuery);
+  // }
 
-  public getAllData(endpoint:string): Observable<CharacterType[]> {
-    return combineLatest([this.query$]).pipe(
-      switchMap(([query]) => {
-        let formattedQuery = query && query.trim().length > 0 ? `?search=${query}` : '';
-        return this.http.get<CharacterType[]>(`${this.baseURL}${endpoint}${formattedQuery}`);
-      })
-    );
-  }
+  // public getAllData(endpoint:string): Observable<CharacterType[]> {
+  //   return combineLatest([this.query$]).pipe(
+  //     switchMap(([query]) => {
+  //       let formattedQuery = query && query.trim().length > 0 ? `?search=${query}` : '';
+  //       return this.http.get<CharacterType[]>(`${this.baseURL}${endpoint}${formattedQuery}`);
+  //     })
+  //   );
+  // }
 
-  public getDataById(endpoint:string,id:string): Observable<CharacterType> {
-    return this.http.get<CharacterType>(`${this.baseURL}${endpoint}/${id}`);
-  }
+  // public getDataById(endpoint:string,id:string): Observable<CharacterType> {
+  //   return this.http.get<CharacterType>(`${this.baseURL}${endpoint}/${id}`);
+  // }
 }
